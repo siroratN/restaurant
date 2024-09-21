@@ -1,3 +1,37 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once '../class/user.php';
+
+$user = new User();
+$message = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['action']) && $_POST['action'] === 'login') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $message = $user->login($email, $password);
+
+    } 
+    elseif (isset($_POST['action']) && $_POST['action'] === 'register') {
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if ($user->register($firstName, $lastName, $email, $phone, $username, $password)) {
+            echo "<script>alert('Registration successful');</script>";
+            // header('Location: login_register.php');
+            exit;
+        } else {
+            $message = "Registration failed.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +122,7 @@
             align-items: center;
         }
 
-            .form-box h2 {
+        .form-box h2 {
             font-size: 2em;
             text-align: center;
         }
@@ -199,24 +233,23 @@
         <div class="form-box login">
 
             <h2>เข้าสู่ระบบ</h2>
-            <form>
+            <form action="login_register.php" method="POST">
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="mail-outline"></ion-icon>
                     </span>
-                    <input type="email" name="mail" required>
+                    <input type="email" name="email" required>
                     <label>อีเมล</label>
                 </div>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed-outline"></ion-icon>
                     </span>
-                    <input type="password" name="pass" required>
+                    <input type="password" name="password" required>
                     <label>รหัสผ่าน</label>
                 </div>
-                <a href="reservation.php">
+                <input type="hidden" name="action" value="login">
                     <button type="submit" class="btn" id="btnlogin" name="login" value="Login">เข้าสู่ระบบ</button>
-                </a>
                 <div class="login-register">
                     <p>ไม่มีบัญชี?
                         <a href="#" class="register-link">ลงทะเบียน</a>
@@ -227,7 +260,7 @@
         <!-- หน้า Register -->
         <div class="form-box register">
             <h2>ลงทะเบียน</h2>
-            <form action="register_db.php" method="POST">
+            <form action="login_register.php" method="POST">
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="people-outline"></ion-icon>
@@ -253,7 +286,7 @@
                     <span class="icon">
                         <ion-icon name="mail-outline"></ion-icon>
                     </span>
-                    <input type="email" name="mail" required>
+                    <input type="email" name="email" required>
                     <label>อีเมล</label>
                 </div>
                 <div class="input-box">
@@ -277,6 +310,7 @@
                     <input type="password" name="confirmed_pass" required>
                     <label>ยืนยันรหัสผ่าน</label>
                 </div>
+                <input type="hidden" name="action" value="register">
                 <button type="submit" class="btn" name="btnregis">สมัครสมาชิก</button>
                 <div class="login-register">
                     <p>มีบัญชีอยู่แล้ว?
@@ -309,4 +343,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -206,8 +206,8 @@
             </select>
         </div>
         <div>
-            <label for="people" class="">จำนวนคน - Required</label><br>
-            <select id="people" name="people" class="date" style="color:black;" required>
+            <label for="amount" class="">จำนวนคน - Required</label><br>
+            <select id="amount" name="amount" class="date" style="color:black;" required>
                 <option value="1">1 คน</option>
                 <option value="2">2 คน</option>
                 <option value="3">3 คน</option>
