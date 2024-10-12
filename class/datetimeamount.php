@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once 'database.php'; // Ensure the correct file is included
+require_once 'database.php';
 
 class Reservation {
     private $db;
@@ -34,6 +34,14 @@ class Reservation {
         return $this->amount;
     }
 
+    public function getCustomerId() {
+        return $this->cus_id;
+    }
+
+    public function getBookingStatus() {
+        return $this->booking_status;
+    }
+
     public function validate() {
         return !empty($this->date) && !empty($this->time) && !empty($this->amount);
     }
@@ -44,14 +52,16 @@ class Reservation {
         
         $stmt = $this->db->prepare($query);
         
-        $stmt->bindValue(':cus_id', $this->cus_id, SQLITE3_INTEGER);
-        $stmt->bindValue(':booking_date', $this->date, SQLITE3_TEXT);
-        $stmt->bindValue(':booking_time', $this->time, SQLITE3_TEXT);
-        $stmt->bindValue(':amount', $this->amount, SQLITE3_INTEGER);
-        $stmt->bindValue(':booking_status', $this->booking_status, SQLITE3_TEXT);
+        // Use getter methods
+        $stmt->bindValue(':cus_id', $this->getCustomerId(), SQLITE3_INTEGER);
+        $stmt->bindValue(':booking_date', $this->getDate(), SQLITE3_TEXT);
+        $stmt->bindValue(':booking_time', $this->getTime(), SQLITE3_TEXT);
+        $stmt->bindValue(':amount', $this->getAmount(), SQLITE3_INTEGER);
+        $stmt->bindValue(':booking_status', $this->getBookingStatus(), SQLITE3_TEXT);
 
         return $stmt->execute();
     }
+
     public function confirmationMessage() {
         return "Your reservation has been confirmed: Date " . $this->date . ", Time " . $this->time . ", for " . $this->amount . " people.";
     }
