@@ -3,18 +3,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 if (isset($_POST['submit'])) {
-    // ตรวจสอบว่ามีการอัปโหลดไฟล์แล้วหรือไม่
     if (isset($_FILES['slip']) && $_FILES['slip']['error'] == 0) {
-        $fileTmpPath = $_FILES['slip']['tmp_name'];  // ตำแหน่งไฟล์ชั่วคราว
-        $fileName = $_FILES['slip']['name'];  // ชื่อไฟล์จริง
-        $fileSize = $_FILES['slip']['size'];  // ขนาดไฟล์
-        $fileType = $_FILES['slip']['type'];  // ประเภทไฟล์
+        $fileTmpPath = $_FILES['slip']['tmp_name'];
+        $fileName = $_FILES['slip']['name'];
+        $fileSize = $_FILES['slip']['size'];
+        $fileType = $_FILES['slip']['type']; 
 
-        // กำหนดโฟลเดอร์ปลายทาง
-        $uploadFileDir = '../uploaded_slips/';  // สร้างโฟลเดอร์เพื่อเก็บสลิปที่อัปโหลด
-        $dest_path = $uploadFileDir . $fileName;  // รวมโฟลเดอร์กับชื่อไฟล์
+        $uploadFileDir = '../uploaded_slips/'; 
+        $dest_path = $uploadFileDir . $fileName;
 
-        // ย้ายไฟล์จากตำแหน่งชั่วคราวไปยังโฟลเดอร์ปลายทาง
         if(move_uploaded_file($fileTmpPath, $dest_path)) {
             echo "ไฟล์สลิปถูกอัปโหลดสำเร็จ: $dest_path";
         } else {
@@ -39,10 +36,8 @@ if (isset($_POST['submit'])) {
         function confirmCancel() {
             const userConfirmed = confirm("การยกเลิกการชำระเงินอาจทำให้คุณถูกยึดเงินมัดจำ คุณแน่ใจหรือไม่ว่าจะยกเลิก?");
             if (userConfirmed) {
-                // ดำเนินการตามขั้นตอนหลังจากผู้ใช้ยืนยันการยกเลิก
                 alert("การจองของคุณถูกยกเลิก");
-                // Redirect หรือทำการดำเนินการยกเลิก
-                window.location.href = "cancel_booking.php";  // ลิงก์หรือหน้าที่จะให้ผู้ใช้ไปเมื่อยกเลิก
+                window.location.href = "cancel_booking.php";
             }
         }
     </script>

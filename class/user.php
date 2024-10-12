@@ -1,5 +1,7 @@
 <?php
 // classes/User.php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once 'Database.php';
 
 class User {
@@ -12,18 +14,6 @@ class User {
     public function login($email, $password) {
         $email = $this->db->escapeString($email);
         $password = $this->db->escapeString($password);
-        // echo $password;
-        // if ($email == "gangnam@gmail.com" && $password == "gangnammanager") {
-        //     // header("Location: manage/home-manager.php");
-        //     exit;
-        // } elseif ($email == "chef@gmail.com" && $password == "chef123") {
-        //     // header("Location: chefroom.php");
-        //     exit;
-        // } elseif ($email == "reciep@gmail.com" && $password == "reciep123") {
-        //     // header("Location: reciep/booking.php");
-        //     exit;
-        // }
-
         $sql = "SELECT * FROM customers WHERE email = '$email'";
         $result = $this->db->query($sql);
         $user = $this->db->fetchArray($result);

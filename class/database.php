@@ -1,6 +1,7 @@
 <?php
 require_once 'DatabaseInterface.php';
-class Database implements DatabaseInterface{
+
+class Database implements DatabaseInterface {
     private $db;
 
     public function __construct() {
@@ -18,4 +19,10 @@ class Database implements DatabaseInterface{
     public function escapeString($string) {
         return $this->db->escapeString($string);
     }
+
+    // New method to prepare SQL statements
+    public function prepare($sql) {
+        return $this->db->prepare($sql);
+    }
 }
+?>

@@ -1,3 +1,34 @@
+<?php
+session_start(); // Start the session
+
+require_once '../class/datetimeamount.php';  // Your Reservation class
+
+$db = new Database();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $cus_id = $_SESSION['cus_id'];
+    $date = $_POST['date'];
+    $time = $_POST['time'];
+    $amount = $_POST['amount'];
+
+    $reservation = new Reservation($db, $cus_id);
+
+    $reservation->setDetails($date, $time, $amount);
+
+    if ($reservation->validate()) {
+        if ($reservation->save()) {
+            echo "<h2>" . $reservation->confirmationMessage() . "</h2>";
+        } else {
+            echo "<h2>Error saving the reservation. Please try again.</h2>";
+        }
+    } else {
+        echo "<h2>Please fill in all required fields.</h2>";
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
