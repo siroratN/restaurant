@@ -52,7 +52,6 @@ class Reservation {
         
         $stmt = $this->db->prepare($query);
         
-        // Use getter methods
         $stmt->bindValue(':cus_id', $this->getCustomerId(), SQLITE3_INTEGER);
         $stmt->bindValue(':booking_date', $this->getDate(), SQLITE3_TEXT);
         $stmt->bindValue(':booking_time', $this->getTime(), SQLITE3_TEXT);

@@ -1,28 +1,22 @@
 <?php
-require_once 'DatabaseInterface.php';
-
-class Database implements DatabaseInterface {
+class DB
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new SQLite3('../db/res.db');
     }
 
-    public function query($sql) {
+    public function query($sql)
+    {
         return $this->db->query($sql);
     }
 
-    public function fetchArray($result) {
-        return $result->fetchArray(SQLITE3_ASSOC);
-    }
-
-    public function escapeString($string) {
+    public function escapeString($string)
+    {
         return $this->db->escapeString($string);
-    }
-
-    // New method to prepare SQL statements
-    public function prepare($sql) {
-        return $this->db->prepare($sql);
     }
 }
 ?>
+
