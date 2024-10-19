@@ -6,34 +6,49 @@
     <title>Document</title>
 </head>
 <body>
+
 <?php
-class MyDB extends SQLite3
+
+include_once '../class/database.php';
+
+class OrderManager
 {
-    function __construct()
+    private $db;
+
+    public function __construct(DB $db)
     {
-        $this->open('db/omakase.db');
+        $this->db = $db;
+    }
+
+    public function updateOrderStatus($order_id, $status = 'cooked')
+    {
+        $update_query = "UPDATE orders SET order_status = :status WHERE order_id = :order_id";
+        $stmt = $this->db->prepare($update_query);
+        $stmt->bindValue(':status', $status, SQLITE3_TEXT);
+        $stmt->bindValue(':order_id', $order_id, SQLITE3_INTEGER);
+        
+        return $stmt->execute() !== false;
     }
 }
-$db = new MyDB();
-$db->busyTimeout(500000);
-
 
 if (isset($_GET['order_id'])) {
-
     $order_id = $_GET['order_id'];
 
-    $update_query = "UPDATE orders SET order_status = 'cooked' WHERE order_id = $order_id";
-    if($db->exec($update_query)) {
-        header("Location: cheffood.php");
+    $db = new DB();
+    $orderManager = new OrderManager($db);
+
+    if ($orderManager->updateOrderStatus($order_id)) {
+        echo "<script>window.location.href = './order.php';</script>";
+        exit;
     } else {
         echo "เกิดข้อผิดพลาดในการอัปเดตสถานะของคำสั่ง: " . $db->lastErrorMsg();
     }
+
+    $db->close();
 } else {
     echo "ไม่มีการส่งค่า order_id";
 }
 
-
-$db->close();
 ?>
 
 </body>
